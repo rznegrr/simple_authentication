@@ -32,11 +32,13 @@ function SignUpForm() {
   const onSubmit = async (data: SignupFormInputs) => {
     setIsSubmitting(true);
     const userData: UserData = await signUp(data);
+    console.log(userData);
+        
     const { access, refresh } = userData;
     localStorage.setItem("access", access);
     localStorage.setItem("refresh", refresh);
-    navigate("/dashboard");
     setIsSubmitting(false);
+    navigate("/dashboard");
   };
 
   return (

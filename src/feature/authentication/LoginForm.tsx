@@ -31,8 +31,8 @@ function LoginForm() {
     const { access, refresh } = userData;
     localStorage.setItem("access", access);
     localStorage.setItem("refresh", refresh);
-    navigate("/dashboard");
     setIsSubmitting(false);
+    navigate("/dashboard");
   };
 
   return (

@@ -13,7 +13,8 @@ import {
 } from "@mui/material";
 
 import AppLayout from "../../ui/AppLayout";
-import { updateUser } from "../../services/apiAuthentication";
+import { logout, updateUser } from "../../services/apiAuthentication";
+import { useNavigate } from "react-router-dom";
 
 type DashboardFormInputs = {
   full_name: string;
@@ -26,6 +27,7 @@ type DashboardFormInputs = {
 function DashboardForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { user } = useUser();
+  const navigate = useNavigate()
 
   const { handleSubmit, register, reset } = useForm<DashboardFormInputs>();
 
@@ -40,6 +42,11 @@ function DashboardForm() {
       reset(user);
     }
   }, [user, reset]);
+
+  const handleLogout = async () => {
+    await logout()
+    navigate('/')
+  };
 
   return (
     <AppLayout>
@@ -125,6 +132,16 @@ function DashboardForm() {
             disabled={isSubmitting}
           >
             ذخیره اطلاعات
+          </Button>
+        </Grid2>
+        <Grid2 size={12}>
+          <Button
+            variant="text"
+            size="large"
+            fullWidth
+            onClick={handleLogout}
+          >
+            خروج از حساب کاربری
           </Button>
         </Grid2>
       </Grid2>

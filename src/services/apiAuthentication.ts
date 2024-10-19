@@ -51,7 +51,6 @@ export const login = async (user: LoginArgs) => {
     console.error(error);
   }
 };
-export const loginOut = () => {};
 
 export const getUser = async () => {
   try {
@@ -84,6 +83,25 @@ export const updateUser = async (id: number, userData: UpdateUserArgs) => {
       credentials: "include",
     });
     const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const logout = async () => {
+  try {
+    const token = localStorage.getItem("access");
+    const res = await fetch(`${BASE_URL}/logout/`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      method: "POST",
+      credentials: "include",
+    });
+    const data = await res.json();
+    localStorage.clear();
     return data;
   } catch (error) {
     console.error(error);
