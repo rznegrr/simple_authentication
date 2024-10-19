@@ -2,6 +2,8 @@ import { TextField, Box, Button, FormControl, Typography } from "@mui/material";
 import AppLayout from "../../ui/AppLayout";
 import { useForm } from "react-hook-form";
 import { login } from "../../services/apiAuthentication";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 type LoginFormInputs = {
   email: string;
@@ -14,6 +16,9 @@ type UserData = {
 };
 
 function LoginForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
   const {
     handleSubmit,
     register,
@@ -21,10 +26,13 @@ function LoginForm() {
   } = useForm<LoginFormInputs>();
 
   const onSubmit = async (data: LoginFormInputs) => {
+    setIsSubmitting(true);
     const userData: UserData = await login(data);
     const { access, refresh } = userData;
-    localStorage.setItem("access", JSON.stringify(access));
-    localStorage.setItem("refresh", JSON.stringify(refresh));
+    localStorage.setItem("access", access);
+    localStorage.setItem("refresh", refresh);
+    navigate("/dashboard");
+    setIsSubmitting(false);
   };
 
   return (
@@ -36,11 +44,17 @@ function LoginForm() {
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          maxWidth: "350px",
+          maxWidth: { xs: "350px", lg: "400px" },
+          padding: { xs: "40px", lg: "60px" },
           gap: 2,
+          border: "2px solid #141414be",
+          borderRadius: 3,
+          justifyContent: "center",
+          margin: "auto",
+          backgroundColor: "#141414be",
         }}
       >
-        <Typography align="center" variant="h4">
+        <Typography align="center" variant="h5" mb={2}>
           ورود
         </Typography>
         <FormControl>
@@ -63,7 +77,13 @@ function LoginForm() {
             {...register("password", { required: "پسوورد را وارد کنید" })}
           />
         </FormControl>
-        <Button variant="contained" type="submit" size="large">
+        <Button
+          variant="contained"
+          type="submit"
+          size="large"
+          sx={{ mt: 2 }}
+          disabled={isSubmitting}
+        >
           ورود
         </Button>
       </Box>

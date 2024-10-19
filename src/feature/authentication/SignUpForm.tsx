@@ -4,6 +4,8 @@ import { TextField, Box, Button, FormControl, Typography } from "@mui/material";
 
 import AppLayout from "../../ui/AppLayout";
 import { signUp } from "../../services/apiAuthentication";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 type SignupFormInputs = {
   username: string;
@@ -18,6 +20,9 @@ type UserData = {
 };
 
 function SignUpForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
   const {
     handleSubmit,
     register,
@@ -25,11 +30,13 @@ function SignUpForm() {
   } = useForm<SignupFormInputs>();
 
   const onSubmit = async (data: SignupFormInputs) => {
+    setIsSubmitting(true);
     const userData: UserData = await signUp(data);
-    const { user, access, refresh } = userData;
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("access", JSON.stringify(access));
-    localStorage.setItem("refresh", JSON.stringify(refresh));
+    const { access, refresh } = userData;
+    localStorage.setItem("access", access);
+    localStorage.setItem("refresh", refresh);
+    navigate("/dashboard");
+    setIsSubmitting(false);
   };
 
   return (
@@ -40,12 +47,18 @@ function SignUpForm() {
           display: "flex",
           flexDirection: "column",
           width: "100%",
-          maxWidth: "350px",
+          maxWidth: { xs: "350px", lg:"400px", },
+          padding: { xs: "40px", lg:"60px"},
           gap: 2,
+          border: "2px solid #141414be",
+          borderRadius: 3,
+          justifyContent: "center",
+          margin: "auto",
+          backgroundColor: "#141414be",
         }}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Typography align="center" variant="h4">
+        <Typography align="center" variant="h5" mb={2}>
           ثبت نام
         </Typography>
         <FormControl>
@@ -78,7 +91,13 @@ function SignUpForm() {
             {...register("password", { required: "پسوورد را وارد کنید" })}
           />
         </FormControl>
-        <Button variant="contained" type="submit" size="large">
+        <Button
+          variant="contained"
+          type="submit"
+          size="large"
+          sx={{ mt: 2 }}
+          disabled={isSubmitting}
+        >
           ثبت نام
         </Button>
       </Box>

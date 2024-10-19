@@ -3,6 +3,12 @@
   src: url("../src/assets/fonts/iranyekanwebregularfanum.woff");
 }
 
+body{
+  background-image: url('../src/assets/images/BgImg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 body * {
   font-family: "yekan" !important;
   direction: rtl;

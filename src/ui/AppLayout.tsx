@@ -8,10 +8,11 @@ function AppLayout({ children }: ChildrenProps) {
   return (
     <Box
       sx={{
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        paddingY:"16px"
       }}
     >
       {children}
